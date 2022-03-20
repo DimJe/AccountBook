@@ -4,13 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="6"
     tools:context=".AddActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendar_custom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:padding="5dp">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/today_money"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="30sp"
+        android:paddingBottom="15sp"
+        android:text="오늘 사용한 금액은 _____입니다"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/black"
+        android:src="@drawable/add"
+        app:maxImageSize="50dp"
+        app:tint="@null" />
 
 </LinearLayout>
