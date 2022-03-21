@@ -2,31 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
     android:orientation="vertical"
-    android:weightSum="6"
-    tools:context=".AddActivity">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calendar_custom"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:padding="5dp">
-
-    </androidx.recyclerview.widget.RecyclerView>
+    android:weightSum="4"
+    tools:context=".TotalMoney">
 
     <TextView
-        android:id="@+id/today_money"
+        android:id="@+id/money"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingTop="30sp"
-        android:text="오늘 사용한 금액은 _____입니다"
-        android:textAlignment="center"
+        android:gravity="center"
+        android:text="50000"
         android:textColor="@color/black"
-        android:textSize="20sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -38,31 +27,31 @@
         android:weightSum="3">
 
         <Button
-            android:id="@+id/eat"
+            android:id="@+id/hundred"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
-            android:text="식비" />
+            android:background="@drawable/round"
+            android:text="+100" />
 
         <Button
-            android:id="@+id/beer"
+            android:id="@+id/_5_hundred"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
-            android:text="주류" />
+            android:background="@drawable/round"
+            android:text="+500" />
 
         <Button
-            android:id="@+id/culture"
+            android:id="@+id/thousand"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
-            android:text="문화 및 여가" />
+            android:background="@drawable/round"
+            android:text="+1000" />
 
     </LinearLayout>
 
@@ -75,33 +64,49 @@
         android:weightSum="3">
 
         <Button
-            android:id="@+id/idontknow"
+            android:id="@+id/_5_thousand"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
-            android:text="...." />
+            android:background="@drawable/round"
+            android:text="+5000" />
 
         <Button
-            android:id="@+id/tax"
+            android:id="@+id/ten_thousand"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
-            android:text="공과금" />
+            android:background="@drawable/round"
+            android:text="+10000" />
 
         <Button
-            android:id="@+id/etc"
+            android:id="@+id/_5_tend_thousand"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
-            android:text="기타" />
-
+            android:background="@drawable/round"
+            android:text="+50000" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round"
+            android:backgroundTint="#DF3636"
+            android:text="Submit" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

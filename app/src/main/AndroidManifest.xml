@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AccountBook">
-        <activity android:name=".AddActivity">
+        <activity android:name=".TotalMoney"
+                  android:theme="@style/Theme.AppCompat.DayNight.Dialog">
         </activity>
+        <activity android:name=".AddActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
