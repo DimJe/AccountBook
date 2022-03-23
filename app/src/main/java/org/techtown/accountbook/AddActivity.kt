@@ -1,5 +1,6 @@
 package org.techtown.accountbook
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -25,22 +26,34 @@ class AddActivity : AppCompatActivity() {
         snap.attachToRecyclerView(calendar_custom)
 
         eat.setOnClickListener {
-            
+            val intent = Intent(this,TotalMoney::class.java)
+            intent.putExtra("type","식비")
+            startActivity(intent)
         }
         beer.setOnClickListener {
-
+            val intent = Intent(this,TotalMoney::class.java)
+            intent.putExtra("type","주류")
+            startActivity(intent)
         }
         culture.setOnClickListener {
-
+            val intent = Intent(this,TotalMoney::class.java)
+            intent.putExtra("type","문화 및 여가")
+            startActivity(intent)
         }
-        idontknow.setOnClickListener {
-
+        snack.setOnClickListener {
+            val intent = Intent(this,TotalMoney::class.java)
+            intent.putExtra("type","간식")
+            startActivity(intent)
         }
         tax.setOnClickListener {
-
+            val intent = Intent(this,TotalMoney::class.java)
+            intent.putExtra("type","공과금")
+            startActivity(intent)
         }
         etc.setOnClickListener {
-
+            val intent = Intent(this,TotalMoney::class.java)
+            intent.putExtra("type","기다")
+            startActivity(intent)
         }
 
     }

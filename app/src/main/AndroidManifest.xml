@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AccountBook">
         <activity android:name=".TotalMoney"
-                  android:theme="@style/Theme.AppCompat.DayNight.Dialog">
+                  android:theme="@style/pop">
         </activity>
         <activity android:name=".AddActivity"></activity>
         <activity android:name=".MainActivity">

@@ -75,13 +75,13 @@
         android:weightSum="3">
 
         <Button
-            android:id="@+id/idontknow"
+            android:id="@+id/snack"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/circle"
-            android:text="...." />
+            android:text="간식" />
 
         <Button
             android:id="@+id/tax"

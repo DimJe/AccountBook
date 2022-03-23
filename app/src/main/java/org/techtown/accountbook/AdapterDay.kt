@@ -2,14 +2,12 @@ package org.techtown.accountbook
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_day.view.*
-import org.techtown.accountbook.MainActivity.Companion.TAG
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -29,7 +27,6 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
     }
 
     override fun onBindViewHolder(holder: DayView, position: Int) {
-        Log.d(TAG, "${forMonthed.toInt()} , $tempMonth")
         holder.layout.item_day_layout.setOnClickListener {
             Toast.makeText(holder.layout.context, "${dayList[position]}", Toast.LENGTH_SHORT).show()
         }
