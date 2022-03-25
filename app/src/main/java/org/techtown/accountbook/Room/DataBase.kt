@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "account")
-class Item(
+data class Item(
     @PrimaryKey(autoGenerate = true) var id : Int?,
     @ColumnInfo(name = "year") var year : String?,
     @ColumnInfo(name = "month") var month : String?,
