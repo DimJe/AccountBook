@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity() {
             //replace로 fragment전환을 하면 계속 새롭게 생성된다.
             //show와 hide를 사용해서 이를 방지한다.
             supportFragmentManager
-                .beginTransaction().hide(calendarFragment).commit()
+                .beginTransaction().setCustomAnimations(R.anim.from_right,R.anim.to_left).hide(calendarFragment).commit()
             supportFragmentManager
-                .beginTransaction().show(statsFragment).commit()
+                .beginTransaction().setCustomAnimations(R.anim.from_right,R.anim.to_left).show(statsFragment).commit()
 
             binding.chart.showText()
             binding.calendar.hideText()
@@ -45,9 +45,9 @@ class MainActivity : AppCompatActivity() {
         binding.calendar.setOnClickListener {
 
             supportFragmentManager
-                .beginTransaction().hide(statsFragment).commit()
+                .beginTransaction().setCustomAnimations(R.anim.from_left,R.anim.to_right).hide(statsFragment).commit()
             supportFragmentManager
-                .beginTransaction().show(calendarFragment).commit()
+                .beginTransaction().setCustomAnimations(R.anim.from_left,R.anim.to_right).show(calendarFragment).commit()
 
             binding.chart.hideText()
             binding.calendar.showText()
