@@ -12,6 +12,14 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.MonthView>(){
     val center = Int.MAX_VALUE / 2
     private var calendar = Calendar.getInstance()
 
+    interface OnItemClickListener{
+        fun onItemClick(date: Date, positon : Int)
+    }
+    private var listener : OnItemClickListener? = null
+    fun setOnItemClickListener(listener : OnItemClickListener) {
+        this.listener = listener
+    }
+
     inner class MonthView(val binding: ItemCalendarMonthBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthView {
@@ -41,7 +49,14 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.MonthView>(){
 
         holder.binding.monthDay.apply {
             layoutManager = GridLayoutManager(holder.binding.root.context, 7)
+            dayListAdapter.setOnItemClickListener(object : DayAdapter.OnItemClickListener{
+                override fun onItemClick(date: Date, positon: Int) {
+                    listener?.onItemClick(date,positon)
+                }
+
+            })
             adapter = dayListAdapter
+
         }
     }
 

@@ -13,6 +13,14 @@ class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
 
     val ROW = 6
 
+    interface OnItemClickListener{
+        fun onItemClick(date: Date, positon : Int)
+    }
+    private var listener : OnItemClickListener? = null
+    fun setOnItemClickListener(listener : OnItemClickListener) {
+        this.listener = listener
+    }
+
     inner class DayView(val binding: ItemCalendarDayBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayView {
@@ -22,9 +30,7 @@ class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
 
     override fun onBindViewHolder(holder: DayView, position: Int) {
         holder.binding.root.setOnClickListener {
-            Toast.makeText(holder.binding.root.context, "${Calendar.getInstance().apply { 
-                time = dayList[position]
-            }.get(Calendar.YEAR)}", Toast.LENGTH_SHORT).show()
+            listener?.onItemClick(dayList[position],position)
         }
         holder.binding.dayText.text = dayList[position].date.toString()
 

@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import org.techtown.accountbook.R
 import org.techtown.accountbook.adapter.MonthAdapter
 import org.techtown.accountbook.databinding.FragmentCalendarBinding
+import java.util.*
 
 
 class CalendarFragment : Fragment() {
@@ -38,7 +40,16 @@ class CalendarFragment : Fragment() {
     private fun initView(){
         binding.calendarRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-            adapter = MonthAdapter()
+            adapter = MonthAdapter().apply {
+                setOnItemClickListener(object : MonthAdapter.OnItemClickListener{
+                    override fun onItemClick(date: Date, positon: Int) {
+                        Toast.makeText(requireActivity(), "${Calendar.getInstance().apply { 
+                            time = date
+                        }.get(Calendar.DAY_OF_MONTH)}", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+            }
             scrollToPosition(Int.MAX_VALUE/2)
         }
         PagerSnapHelper().attachToRecyclerView(binding.calendarRecyclerView)
