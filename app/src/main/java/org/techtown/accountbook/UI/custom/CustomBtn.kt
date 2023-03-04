@@ -52,14 +52,14 @@ class CustomBtn(context: Context,attrs: AttributeSet) : ConstraintLayout(context
     fun hideText(){
 
         layoutParams.width = LayoutParams.WRAP_CONTENT
-        textView.animate().scaleX(1f).setDuration(150).withEndAction {
+        textView.animate().scaleX(1f).setDuration(120).withEndAction {
             textView.visibility = View.GONE
         }
     }
     fun showText(){
 
         layoutParams.width = 0
-        textView.animate().scaleX(1f).setDuration(150).withEndAction {
+        textView.animate().scaleX(1f).setDuration(120).withEndAction {
             textView.visibility = View.VISIBLE
         }
     }
