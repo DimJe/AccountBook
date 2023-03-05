@@ -11,7 +11,7 @@
         android:padding="5dp"
         android:gravity="center"
         android:text="2022년 6월"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -25,7 +25,7 @@
             android:text="일"
             android:textColor="#ff0000"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:textSize="15sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:text="월"
             android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:textSize="15sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:text="화"
             android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:textSize="15sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:text="수"
             android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:textSize="15sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:text="목"
             android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:textSize="15sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:text="금"
             android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:textSize="15sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             android:text="토"
             android:textColor="#0000ff"
             android:gravity="center"
-            android:textSize="18sp"/>
+            android:textSize="15sp"/>
     </LinearLayout>
 
     <View
