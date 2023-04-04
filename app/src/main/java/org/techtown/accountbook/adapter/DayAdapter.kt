@@ -4,17 +4,17 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import org.techtown.accountbook.Model.SpendingUiData
 import org.techtown.accountbook.databinding.ItemCalendarDayBinding
 import java.util.*
 
-class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerView.Adapter<DayAdapter.DayView>()  {
+class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>,var uiData: List<SpendingUiData>): RecyclerView.Adapter<DayAdapter.DayView>()  {
 
     val ROW = 6
 
     interface OnItemClickListener{
-        fun onItemClick(date: Date, positon : Int)
+        fun onItemClick(date: Date, position : Int)
     }
     private var listener : OnItemClickListener? = null
     fun setOnItemClickListener(listener : OnItemClickListener) {
@@ -29,10 +29,22 @@ class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
     }
 
     override fun onBindViewHolder(holder: DayView, position: Int) {
+
         holder.binding.root.setOnClickListener {
             listener?.onItemClick(dayList[position],position)
         }
+
         holder.binding.dayText.text = dayList[position].date.toString()
+        uiData.find {
+            it.month==dayList[position].month+1 && it.day==dayList[position].date
+        }.apply {
+            if(this==null) {
+                holder.binding.outputMoney.text = "0"
+            } else {
+                this.money.toString().also { holder.binding.outputMoney.text = it }
+            }
+        }
+
 
         holder.binding.dayText.setTextColor(when(position % 7) {
             0 -> Color.RED

@@ -2,9 +2,11 @@ package org.techtown.accountbook.UI.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import org.koin.android.ext.android.inject
 import org.techtown.accountbook.R
 import org.techtown.accountbook.UI.fragment.CalendarFragment
 import org.techtown.accountbook.UI.fragment.StatsFragment
+import org.techtown.accountbook.ViewModel.ViewModel
 import org.techtown.accountbook.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     }
     private val calendarFragment = CalendarFragment()
     private val statsFragment = StatsFragment()
+    private val viewModel: ViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

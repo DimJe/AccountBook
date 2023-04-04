@@ -9,20 +9,26 @@ import kotlinx.coroutines.flow.Flow
 interface SpendingDataDao {
 
     @Query("SELECT * FROM spending")
-    suspend fun getAll() : List<SpendingData>
+    fun getAll() : List<SpendingData>
 
     @Insert
     suspend fun insertData(spendingData: SpendingData)
 
     @Query("SELECT * FROM spending WHERE year=:year")
-    suspend fun getByYear(year: Int) : List<SpendingData>
+    fun getByYear(year: Int) : Flow<List<SpendingData>>
 
     @Query("SELECT * FROM spending WHERE month=:month")
-    suspend fun getByMonth(month: Int) : List<SpendingData>
+    fun getByMonth(month: Int) : Flow<List<SpendingData>>
 
     @Query("DELETE FROM spending")
     suspend fun clearTable()
 
     @Query("SELECT * FROM spending WHERE type=:type")
-    suspend fun getByType(type: String) : List<SpendingData>
+    fun getByType(type: String) : Flow<List<SpendingData>>
+
+    @Query("SELECT year,month,day,sum(money) as money\n" +
+            "FROM spending \n" +
+            "WHERE year =:year AND month =:month\n" +
+            "group by day;")
+    suspend fun getUiData(year: Int,month: Int) : List<SpendingUiData>
 }

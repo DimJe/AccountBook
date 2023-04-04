@@ -1,16 +1,19 @@
 package org.techtown.accountbook.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.techtown.accountbook.Model.SpendingUiData
 import org.techtown.accountbook.databinding.ItemCalendarMonthBinding
 import java.util.*
 
-class MonthAdapter: RecyclerView.Adapter<MonthAdapter.MonthView>(){
+class MonthAdapter(var uiData: List<SpendingUiData>): RecyclerView.Adapter<MonthAdapter.MonthView>(){
 
-    val center = Int.MAX_VALUE / 2
+    private val center = Int.MAX_VALUE / 2
     private var calendar = Calendar.getInstance()
+    //lateinit var dayListAdapter: DayAdapter
 
     interface OnItemClickListener{
         fun onItemClick(date: Date, positon : Int)
@@ -35,7 +38,7 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.MonthView>(){
         holder.binding.monthText.text = "${calendar.get(Calendar.YEAR)}년 ${calendar.get(Calendar.MONTH) + 1}월"
         val tempMonth = calendar.get(Calendar.MONTH)
 
-        var dayList: MutableList<Date> = MutableList(6 * 7) { Date() }
+        val dayList: MutableList<Date> = MutableList(6 * 7) { Date() }
         for(i in 0..5) {
             for(k in 0..6) {
                 calendar.add(Calendar.DAY_OF_MONTH, (1-calendar.get(Calendar.DAY_OF_WEEK)) + k)
@@ -44,14 +47,13 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.MonthView>(){
             calendar.add(Calendar.WEEK_OF_MONTH, 1)
         }
 
-        //val dayListManager = GridLayoutManager(holder.binding.root.context, 7)
-        val dayListAdapter = DayAdapter(tempMonth, dayList)
+        val dayListAdapter = DayAdapter(tempMonth, dayList, uiData)
 
         holder.binding.monthDay.apply {
             layoutManager = GridLayoutManager(holder.binding.root.context, 7)
             dayListAdapter.setOnItemClickListener(object : DayAdapter.OnItemClickListener{
-                override fun onItemClick(date: Date, positon: Int) {
-                    listener?.onItemClick(date,positon)
+                override fun onItemClick(date: Date, position: Int) {
+                    listener?.onItemClick(date,position)
                 }
 
             })
@@ -59,7 +61,15 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.MonthView>(){
 
         }
     }
+    fun submitSendingData(data: List<SpendingUiData>){
+        try {
+            uiData = data
+            notifyDataSetChanged()
 
+        }catch (e:Exception){
+            Log.d("태그", "submitSendingData:${e.message} ")
+        }
+    }
     override fun getItemCount(): Int {
         return Int.MAX_VALUE
     }
