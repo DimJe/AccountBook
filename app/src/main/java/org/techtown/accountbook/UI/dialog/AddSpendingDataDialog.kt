@@ -10,19 +10,28 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.techtown.accountbook.Model.SpendingDataDao
 import org.techtown.accountbook.UI.custom.CustomRadioBtn
 import org.techtown.accountbook.databinding.DialogAddSpendingBinding
+import java.util.Date
 
-class AddSpendingDataDialog(dialogListener: DialogListener) : DialogFragment() {
+class AddSpendingDataDialog(dialogListener: DialogListener,date: Date) : DialogFragment() {
 
     private var _binding: DialogAddSpendingBinding? = null
     private val binding get() = _binding!!
     private var clicked: CustomRadioBtn? = null
 
     private var dialogListener: DialogListener? = null
+    private var date: Date? = null
+    val dao: SpendingDataDao by inject()
 
     init {
         this.dialogListener = dialogListener
+        this.date = date
     }
 
     override fun onCreateView(
@@ -33,6 +42,10 @@ class AddSpendingDataDialog(dialogListener: DialogListener) : DialogFragment() {
         Log.d("태그", "onCreateView:called ")
         _binding = DialogAddSpendingBinding.inflate(inflater,container,false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.getAll().forEach { Log.d("태그", "submitData: $it") }
+        }
 
         binding.gridLayout.children.forEach { view ->
             view.setOnClickListener {
@@ -56,9 +69,10 @@ class AddSpendingDataDialog(dialogListener: DialogListener) : DialogFragment() {
         }
         binding.submit.setOnClickListener {
             if(binding.editMoney.text.toString().isNotBlank() && clicked != null){
-                this.dialogListener!!.submitData(binding.editMoney.text.toString().toInt(),clicked!!.getType())
+                this.dialogListener!!.submitData(binding.editMoney.text.toString().toInt(),clicked!!.getType(),date!!)
             }
             else Toast.makeText(requireContext(), "소비 정보를 다시 한번 확인해주세요.", Toast.LENGTH_SHORT).show()
+            dismiss()
         }
         binding.cancel.setOnClickListener {
             dismiss()
