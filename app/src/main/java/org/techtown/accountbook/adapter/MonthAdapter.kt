@@ -13,10 +13,9 @@ class MonthAdapter(var uiData: List<SpendingUiData>): RecyclerView.Adapter<Month
 
     private val center = Int.MAX_VALUE / 2
     private var calendar = Calendar.getInstance()
-    //lateinit var dayListAdapter: DayAdapter
 
     interface OnItemClickListener{
-        fun onItemClick(date: Date, positon : Int)
+        fun onItemClick(date: Date, position : Int)
     }
     private var listener : OnItemClickListener? = null
     fun setOnItemClickListener(listener : OnItemClickListener) {
@@ -51,6 +50,7 @@ class MonthAdapter(var uiData: List<SpendingUiData>): RecyclerView.Adapter<Month
 
         holder.binding.monthDay.apply {
             layoutManager = GridLayoutManager(holder.binding.root.context, 7)
+            setHasFixedSize(true)
             dayListAdapter.setOnItemClickListener(object : DayAdapter.OnItemClickListener{
                 override fun onItemClick(date: Date, position: Int) {
                     listener?.onItemClick(date,position)

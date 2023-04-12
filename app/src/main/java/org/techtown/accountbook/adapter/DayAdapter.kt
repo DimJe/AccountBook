@@ -35,13 +35,16 @@ class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>,var uiData: L
         }
 
         holder.binding.dayText.text = dayList[position].date.toString()
-        uiData.find {
-            it.month==dayList[position].month+1 && it.day==dayList[position].date
-        }.apply {
-            if(this==null) {
-                holder.binding.outputMoney.text = "0"
-            } else {
-                this.money.toString().also { holder.binding.outputMoney.text = it }
+
+        if(uiData.isNotEmpty()){
+            uiData.find {
+                it.month==dayList[position].month+1 && it.day==dayList[position].date
+            }.apply {
+                if(this==null) {
+                    holder.binding.outputMoney.text = ""
+                } else {
+                    this.money.toString().also { holder.binding.outputMoney.text = it }
+                }
             }
         }
 
