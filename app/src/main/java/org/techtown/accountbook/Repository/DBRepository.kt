@@ -21,6 +21,12 @@ class DBRepository(private val dao: SpendingDataDao) {
             emit(ResultState.Error(e.message?:""))
         }
     }.flowOn(Dispatchers.IO)
+
+    fun getUiDataFlow(year: Int,month: Int) = flow{
+        dao.getUiDataFlow(year, month).collect{
+            emit(ResultState.Success(it))
+        }
+    }.flowOn(Dispatchers.IO)
     suspend fun deleteAll(){
         dao.clearTable()
     }
