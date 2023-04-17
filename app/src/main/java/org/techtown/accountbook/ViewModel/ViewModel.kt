@@ -27,7 +27,7 @@ class ViewModel(private val dbRepository: DBRepository) : ViewModel() {
 
     fun getUiData(year: Int,month: Int) = viewModelScope.launch {
         mSpendingUiData.value = ResultState.Loading()
-        dbRepository.getUiData(year,month)
+        dbRepository.getUiDataFlow(year,month)
             .catch { error->
                 mSpendingUiData.value = ResultState.Error(error.message?:"")
             }
