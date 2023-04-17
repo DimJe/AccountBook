@@ -6,22 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.techtown.accountbook.Model.SpendingData
-import org.techtown.accountbook.Model.SpendingDataDao
-import org.techtown.accountbook.R
 import org.techtown.accountbook.Repository.ResultState
 import org.techtown.accountbook.UI.dialog.AddSpendingDataDialog
 import org.techtown.accountbook.UI.dialog.DialogListener
@@ -37,10 +30,11 @@ class CalendarFragment : Fragment(),DialogListener {
     private val calender = Calendar.getInstance()
     private val viewModel: ViewModel by activityViewModel()
     lateinit var calAdapter: MonthAdapter
-    val dao: SpendingDataDao by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         calender.time = Date()
+
 
     }
 
@@ -68,9 +62,6 @@ class CalendarFragment : Fragment(),DialogListener {
                         is ResultState.Loading -> {}
                         is ResultState.Success -> {
                             it.data?.let {list ->
-                                list.forEach {value ->
-                                    Log.d("태그", "onViewCreated: $value")
-                                }
                                 calAdapter.submitSendingData(list)
                             }
                         }
@@ -89,14 +80,12 @@ class CalendarFragment : Fragment(),DialogListener {
             val psHelper = PagerSnapHelper()
             psHelper.attachToRecyclerView(this)
 
-
+            setHasFixedSize(true)
+            setItemViewCacheSize(3)
             layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
             adapter = calAdapter.apply {
                 setOnItemClickListener(object : MonthAdapter.OnItemClickListener{
-                    override fun onItemClick(date: Date, positon: Int) {
-                        Toast.makeText(requireActivity(), "${Calendar.getInstance().apply { 
-                            time = date
-                        }.get(Calendar.DAY_OF_MONTH)}", Toast.LENGTH_SHORT).show()
+                    override fun onItemClick(date: Date, position: Int) {
                         AddSpendingDataDialog(this@CalendarFragment,date).apply {
                             show(this@CalendarFragment.requireActivity().supportFragmentManager,"spending")
                         }
@@ -106,7 +95,6 @@ class CalendarFragment : Fragment(),DialogListener {
             scrollToPosition(Int.MAX_VALUE/2)
             addOnScrollListener(object : RecyclerView.OnScrollListener(){
                 var temp = 0
-                //var dir = false
                 var currentPos = RecyclerView.NO_POSITION
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if(temp == 0){
@@ -125,15 +113,12 @@ class CalendarFragment : Fragment(),DialogListener {
                         val position = recyclerView.layoutManager!!.getPosition(view)
                         if(currentPos>position) {
                             calender.add(Calendar.MONTH,-1)
-                            Log.d("태그", "onScrollStateChanged: ${calender.get(Calendar.YEAR)} ${calender.get(Calendar.MONTH)+1}월 ")
                             viewModel.getUiData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
                         }
                         else if(currentPos<position){
                             calender.add(Calendar.MONTH,1)
-                            Log.d("태그", "onScrollStateChanged:${calender.get(Calendar.YEAR)} ${calender.get(Calendar.MONTH)+1}월 ")
                             viewModel.getUiData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
                         }
-                        else Log.d("태그", "onScrollStateChanged: 같은 월 ")
                         temp = 0
                     }
                 }
