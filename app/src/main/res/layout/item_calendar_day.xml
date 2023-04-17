@@ -23,7 +23,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:textColor="@color/black"
-        android:text="';';';"
+        android:text=""
         android:textSize="12sp" />
 
 </LinearLayout>
