@@ -27,6 +27,12 @@ class DBRepository(private val dao: SpendingDataDao) {
             emit(ResultState.Success(it))
         }
     }.flowOn(Dispatchers.IO)
+
+    fun getChartingData(year: Int,month: Int) = flow{
+        dao.getChartingData(year, month).collect{
+            emit(ResultState.Success(it))
+        }
+    }.flowOn(Dispatchers.IO)
     suspend fun deleteAll(){
         dao.clearTable()
     }
