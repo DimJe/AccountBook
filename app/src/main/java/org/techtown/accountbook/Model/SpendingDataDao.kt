@@ -39,4 +39,9 @@ interface SpendingDataDao {
     fun getUiDataFlow(year: Int,month: Int) : Flow<List<SpendingUiData>>
 
     //차트 그릴떄 필요한 데이터 덩는 쿼리 만들어야함 해당 월의 날짜와 금액 ex) (1,3000),(2,54440)....
+    @Query("SELECT day,sum(money) as money\n" +
+            "FROM spending \n" +
+            "WHERE year =:year AND month =:month\n" +
+            "group by day;")
+    fun getChartingData(year: Int,month: Int) : Flow<List<SpendingChartingData>>
 }
