@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.techtown.accountbook.Model.SpendingChartingData
 import org.techtown.accountbook.Model.SpendingData
 import org.techtown.accountbook.Model.SpendingUiData
 import org.techtown.accountbook.Repository.ResultState
@@ -20,6 +21,9 @@ class ViewModel(private val dbRepository: DBRepository) : ViewModel() {
 
     private var mSpendingData: MutableStateFlow<ResultState<List<SpendingData>>> = MutableStateFlow(ResultState.Loading())
     var spendingData: StateFlow<ResultState<List<SpendingData>>> = mSpendingData
+
+    private var mSpendingChartingData: MutableStateFlow<ResultState<List<SpendingChartingData>>> = MutableStateFlow(ResultState.Loading())
+    var spendingChartingData: StateFlow<ResultState<List<SpendingChartingData>>> = mSpendingChartingData
 
     fun insertData(data: SpendingData)= viewModelScope.launch {
         dbRepository.insertSpendingData(data)
@@ -33,6 +37,16 @@ class ViewModel(private val dbRepository: DBRepository) : ViewModel() {
             }
             .collect{ value ->
                 mSpendingUiData.value = value
+            }
+    }
+    fun getChartingData(year: Int,month: Int) = viewModelScope.launch {
+        mSpendingChartingData.value = ResultState.Loading()
+        dbRepository.getChartingData(year, month)
+            .catch {
+                mSpendingChartingData.value = ResultState.Error(it.message?:"")
+            }
+            .collect{
+                mSpendingChartingData.value = it
             }
     }
     fun deleteDB(){
