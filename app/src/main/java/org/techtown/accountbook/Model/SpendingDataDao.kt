@@ -1,5 +1,6 @@
 package org.techtown.accountbook.Model
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -14,17 +15,12 @@ interface SpendingDataDao {
     @Insert
     suspend fun insertData(spendingData: SpendingData)
 
-    @Query("SELECT * FROM spending WHERE year=:year")
-    fun getByYear(year: Int) : Flow<List<SpendingData>>
-
-    @Query("SELECT * FROM spending WHERE month=:month")
-    fun getByMonth(month: Int) : Flow<List<SpendingData>>
+    @Query("SELECT * FROM spending WHERE year=:year AND month=:month order by day")
+    fun getSpendingData(year: Int,month: Int) : PagingSource<Int, SpendingData>
 
     @Query("DELETE FROM spending")
     suspend fun clearTable()
 
-    @Query("SELECT * FROM spending WHERE type=:type")
-    fun getByType(type: String) : Flow<List<SpendingData>>
 
     @Query("SELECT year,month,day,sum(money) as money\n" +
             "FROM spending \n" +
