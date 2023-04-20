@@ -55,6 +55,8 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.5.1")
     kapt("androidx.room:room-compiler:2.5.1")
     implementation("androidx.room:room-ktx:2.5.1")
+    implementation 'androidx.room:room-paging:2.5.1'
+
 
     implementation "io.insert-koin:koin-core:3.4.0"
     implementation "io.insert-koin:koin-android:3.4.0"
