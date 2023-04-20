@@ -1,13 +1,14 @@
 package org.techtown.accountbook.ViewModel
 
-import android.util.Log
 import org.techtown.accountbook.Repository.DBRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.techtown.accountbook.Model.SpendingChartingData
 import org.techtown.accountbook.Model.SpendingData
@@ -48,6 +49,10 @@ class ViewModel(private val dbRepository: DBRepository) : ViewModel() {
             .collect{
                 mSpendingChartingData.value = it
             }
+    }
+
+    fun getPagingData(year: Int,month: Int) : Flow<PagingData<SpendingData>>{
+        return dbRepository.getPagingData(year, month).cachedIn(viewModelScope)
     }
     fun deleteDB(){
         viewModelScope.launch {
