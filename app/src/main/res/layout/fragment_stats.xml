@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:textSize="17sp"
             android:textColor="@color/black"
-            android:text="해당 월 총 금액"
             android:gravity="center"
             />
         <TextView
@@ -28,7 +27,6 @@
             android:layout_height="wrap_content"
             android:textSize="17sp"
             android:textColor="@color/black"
-            android:text="해당 월 최고 금액"
             android:layout_marginVertical="5dp"
             android:gravity="center"
             />
