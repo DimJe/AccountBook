@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,11 +21,9 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.techtown.accountbook.Model.SpendingChartingData
-import org.techtown.accountbook.R
 import org.techtown.accountbook.Repository.ResultState
 import org.techtown.accountbook.UI.custom.OnSwipeTouchListener
 import org.techtown.accountbook.ViewModel.ViewModel
@@ -59,6 +56,12 @@ class StatsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.requestPagingData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
+        viewModel.getChartingData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
@@ -72,9 +75,6 @@ class StatsFragment : Fragment() {
                             is ResultState.Loading -> {}
                             is ResultState.Success -> {
                                 it.data?.let {list ->
-                                    list.forEach {
-                                        Log.d("태그", "charting:$it ")
-                                    }
                                     setData(binding.chart,list)
                                     setTitle(list)
                                 }
@@ -83,7 +83,7 @@ class StatsFragment : Fragment() {
                     }
                 }
                 launch {
-                    viewModel.getPagingData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1).collectLatest {
+                    viewModel.pagingDataFlow.collect {
                         adapter.submitData(it)
                     }
                 }
@@ -93,16 +93,18 @@ class StatsFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initView(){
-        Log.d("태그", "stats called")
         initBarChart(binding.chart)
-        viewModel.getChartingData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
 
         binding.chart.setOnTouchListener(object : OnSwipeTouchListener(requireContext()){
             override fun onSwipeLeft() {
-                Toast.makeText(requireContext(),"왼쪽으로",Toast.LENGTH_SHORT).show()
+                calender.add(Calendar.MONTH,1)
+                viewModel.getChartingData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
+                viewModel.requestPagingData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
             }
             override fun onSwipeRight() {
-                Toast.makeText(requireContext(),"오른쪽으로",Toast.LENGTH_SHORT).show()
+                calender.add(Calendar.MONTH,-1)
+                viewModel.getChartingData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
+                viewModel.requestPagingData(calender.get(Calendar.YEAR),calender.get(Calendar.MONTH)+1)
             }
         })
 
