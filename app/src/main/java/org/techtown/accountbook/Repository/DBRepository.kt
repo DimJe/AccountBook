@@ -1,10 +1,13 @@
 package org.techtown.accountbook.Repository
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.techtown.accountbook.Model.SpendingData
@@ -35,7 +38,7 @@ class DBRepository(private val dao: SpendingDataDao) {
             maxSize = 50
         )){
             dao.getSpendingData(year, month)
-        }.flow
+        }.flow.filterNotNull()
     }
     suspend fun deleteAll(){
         dao.clearTable()

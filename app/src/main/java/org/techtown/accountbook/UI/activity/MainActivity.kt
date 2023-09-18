@@ -1,9 +1,17 @@
 package org.techtown.accountbook.UI.activity
 
+import android.app.NotificationManager
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import androidx.core.app.NotificationManagerCompat
 import org.koin.android.ext.android.inject
 import org.techtown.accountbook.R
+import org.techtown.accountbook.Service.MyNotificationListenerService
 import org.techtown.accountbook.UI.fragment.CalendarFragment
 import org.techtown.accountbook.UI.fragment.StatsFragment
 import org.techtown.accountbook.ViewModel.ViewModel
@@ -54,6 +62,21 @@ class MainActivity : AppCompatActivity() {
 
             binding.chart.hideText()
             binding.calendar.showText()
+        }
+        if(!isNotificationPermissionGranted()) {
+            startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+        }
+    }
+
+    private fun isNotificationPermissionGranted(): Boolean {
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.isNotificationListenerAccessGranted(ComponentName(
+                application,
+                MyNotificationListenerService::class.java
+            ))
+        } else {
+            NotificationManagerCompat.getEnabledListenerPackages(applicationContext).contains(applicationContext.packageName)
         }
     }
 }

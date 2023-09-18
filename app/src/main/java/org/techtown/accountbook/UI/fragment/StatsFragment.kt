@@ -84,7 +84,11 @@ class StatsFragment : Fragment() {
                 }
                 launch {
                     viewModel.pagingDataFlow.collect {
-                        adapter.submitData(it)
+                        try {
+                            adapter.submitData(it)
+                        }catch (e:Exception){
+                            Log.d("태그", "onViewCreated:${e.cause} ${e.message} ")
+                        }
                     }
                 }
             }
@@ -171,25 +175,41 @@ class StatsFragment : Fragment() {
         legend.setDrawInside(false)
     }
     private fun setData(barChart: BarChart,data: List<SpendingChartingData>){
+
         barChart.setScaleEnabled(false)
+        if(data.isEmpty()){
+            barChart.data = null
+            barChart.invalidate()
+            return
+        }
+        try {
+            val size = viewModel.getDayOfMonth(calender.get(Calendar.MONTH)+1)!!
+            val valueList = ArrayList<BarEntry>()
+            for(i in 1..size+1){
+                valueList.add(BarEntry(i.toFloat(),0f))
+            }
+            val title = "일별 사용 금액"
 
-        val valueList = ArrayList<BarEntry>()
-        val title = "일별 사용 금액"
+            data.forEach {
+                valueList[it.day].y = it.money.toFloat()
 
-        data.forEach {
-            valueList.add(BarEntry(it.day.toFloat(),it.money.toFloat()))
+            }
+            val barDataSet = BarDataSet(valueList,title)
+            barDataSet.color = Color.BLACK
+
+            val charData = BarData(barDataSet)
+            barChart.data = charData
+            barChart.invalidate()
+        }catch (e:Exception){
+            Log.d("태그", "setData?: ${e.message}")
         }
 
-        val barDataSet = BarDataSet(valueList,title)
-        barDataSet.color = Color.BLACK
-
-        val data = BarData(barDataSet)
-        barChart.data = data
-        barChart.invalidate()
     }
 
     @SuppressLint("SetTextI18n")
     private fun setTitle(list: List<SpendingChartingData>){
+
+        if(list.isEmpty()) return
 
         val total = list.sumOf { it.money }
         val max = list.maxBy { it.money }.money
