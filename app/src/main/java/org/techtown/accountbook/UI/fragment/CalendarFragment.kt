@@ -16,11 +16,13 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.techtown.accountbook.Model.SpendingData
 import org.techtown.accountbook.Repository.ResultState
+import org.techtown.accountbook.UI.activity.MainActivity
 import org.techtown.accountbook.UI.dialog.AddSpendingDataDialog
 import org.techtown.accountbook.UI.dialog.DialogListener
 import org.techtown.accountbook.ViewModel.ViewModel
 import org.techtown.accountbook.adapter.MonthAdapter
 import org.techtown.accountbook.databinding.FragmentCalendarBinding
+import timber.log.Timber
 import java.util.*
 
 
@@ -49,6 +51,11 @@ class CalendarFragment : Fragment(),DialogListener {
 
         return binding.root
     }
+    fun showDialog(date: Date = Date(),money: String = ""){
+        AddSpendingDataDialog(this@CalendarFragment,date,money).apply {
+            show(this@CalendarFragment.requireActivity().supportFragmentManager,"spending")
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,6 +70,9 @@ class CalendarFragment : Fragment(),DialogListener {
                         is ResultState.Success -> {
                             it.data?.let {list ->
                                 calAdapter.submitSendingData(list)
+                            }
+                            it.data?.forEach {
+                                Timber.e("$it")
                             }
                         }
                     }
@@ -86,9 +96,7 @@ class CalendarFragment : Fragment(),DialogListener {
             adapter = calAdapter.apply {
                 setOnItemClickListener(object : MonthAdapter.OnItemClickListener{
                     override fun onItemClick(date: Date, position: Int) {
-                        AddSpendingDataDialog(this@CalendarFragment,date).apply {
-                            show(this@CalendarFragment.requireActivity().supportFragmentManager,"spending")
-                        }
+                        showDialog(date = date)
                     }
                 })
             }

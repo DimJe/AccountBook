@@ -17,9 +17,10 @@ import org.koin.android.ext.android.inject
 import org.techtown.accountbook.Model.SpendingDataDao
 import org.techtown.accountbook.UI.custom.CustomRadioBtn
 import org.techtown.accountbook.databinding.DialogAddSpendingBinding
+import timber.log.Timber
 import java.util.Date
 
-class AddSpendingDataDialog(dialogListener: DialogListener,date: Date) : DialogFragment() {
+class AddSpendingDataDialog(dialogListener: DialogListener,date: Date,money: String = "") : DialogFragment() {
 
     private var _binding: DialogAddSpendingBinding? = null
     private val binding get() = _binding!!
@@ -27,11 +28,13 @@ class AddSpendingDataDialog(dialogListener: DialogListener,date: Date) : DialogF
 
     private var dialogListener: DialogListener? = null
     private var date: Date? = null
+    private var moneyText = ""
     val dao: SpendingDataDao by inject()
 
     init {
         this.dialogListener = dialogListener
         this.date = date
+        moneyText = money
     }
 
     override fun onCreateView(
@@ -39,13 +42,12 @@ class AddSpendingDataDialog(dialogListener: DialogListener,date: Date) : DialogF
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("태그", "onCreateView:called ")
-        _binding = DialogAddSpendingBinding.inflate(inflater,container,false)
+        Timber.e("SpendingDialog - create")
+        Timber.e("${date!!.month+1}/${date!!.date}")
+        _binding = DialogAddSpendingBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        CoroutineScope(Dispatchers.IO).launch {
-            dao.getAll().forEach { Log.d("태그", "submitData: $it") }
-        }
+        binding.editMoney.setText(moneyText)
 
         binding.gridLayout.children.forEach { view ->
             view.setOnClickListener {
@@ -54,11 +56,13 @@ class AddSpendingDataDialog(dialogListener: DialogListener,date: Date) : DialogF
                         clicked = it as CustomRadioBtn
                         it.isSelected = !it.isSelected
                     }
+
                     it as CustomRadioBtn -> {
                         Log.d("태그", "onCreateView:?? ")
                         clicked!!.isSelected = !(clicked!!.isSelected)
                         clicked = null
                     }
+
                     else -> {
                         clicked!!.isSelected = !(clicked!!.isSelected)
                         clicked = it
@@ -68,10 +72,14 @@ class AddSpendingDataDialog(dialogListener: DialogListener,date: Date) : DialogF
             }
         }
         binding.submit.setOnClickListener {
-            if(binding.editMoney.text.toString().isNotBlank() && clicked != null){
-                this.dialogListener!!.submitData(binding.editMoney.text.toString().toInt(),clicked!!.getType(),date!!)
-            }
-            else Toast.makeText(requireContext(), "소비 정보를 다시 한번 확인해주세요.", Toast.LENGTH_SHORT).show()
+            if (binding.editMoney.text.toString().isNotBlank() && clicked != null) {
+                this.dialogListener!!.submitData(
+                    binding.editMoney.text.toString().toInt(),
+                    clicked!!.getType(),
+                    date!!
+                )
+            } else Toast.makeText(requireContext(), "소비 정보를 다시 한번 확인해주세요.", Toast.LENGTH_SHORT)
+                .show()
             dismiss()
         }
         binding.cancel.setOnClickListener {

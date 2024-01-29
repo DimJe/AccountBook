@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,7 +17,14 @@ import org.techtown.accountbook.UI.fragment.CalendarFragment
 import org.techtown.accountbook.UI.fragment.StatsFragment
 import org.techtown.accountbook.ViewModel.ViewModel
 import org.techtown.accountbook.databinding.ActivityMainBinding
+import timber.log.Timber
 
+/*
+hilt변경
+navigation
+ui design
+그냥 알림 권한
+*/
 class MainActivity : AppCompatActivity() {
 
     private val binding : ActivityMainBinding by lazy {
@@ -30,6 +38,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val flag = intent.getBooleanExtra("addSpending",false)
+        if(flag){
+            Timber.e("flag == true")
+            Timber.e("value = ${intent.getStringExtra("money")}")
+            calendarFragment.showDialog(money = intent.getStringExtra("money")?:"")
+        }
 
     }
     private fun initView(){
@@ -66,6 +84,8 @@ class MainActivity : AppCompatActivity() {
         if(!isNotificationPermissionGranted()) {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
+        //startForegroundService(Intent(this,MyNotificationListenerService::class.java))
+
     }
 
     private fun isNotificationPermissionGranted(): Boolean {
