@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navhost"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="org.techtown.accountbook.UI.fragment.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar">
+        <action
+            android:id="@+id/action_calendarFragment_to_statsFragment"
+            app:destination="@id/statsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="org.techtown.accountbook.UI.fragment.StatsFragment"
+        android:label="fragment_stats"
+        tools:layout="@layout/fragment_stats">
+        <action
+            android:id="@+id/action_statsFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>
