@@ -16,8 +16,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import org.koin.android.ext.android.inject
+import org.techtown.accountbook.Model.SpendingData
 import org.techtown.accountbook.R
 import org.techtown.accountbook.Service.MyNotificationListenerService
+import org.techtown.accountbook.UI.dialog.AddSpendingDataDialog
+import org.techtown.accountbook.UI.dialog.DialogListener
 import org.techtown.accountbook.UI.fragment.CalendarFragment
 import org.techtown.accountbook.UI.fragment.CalendarFragmentDirections
 import org.techtown.accountbook.UI.fragment.StatsFragment
@@ -25,6 +28,8 @@ import org.techtown.accountbook.UI.fragment.StatsFragmentDirections
 import org.techtown.accountbook.ViewModel.ViewModel
 import org.techtown.accountbook.databinding.ActivityMainBinding
 import timber.log.Timber
+import java.util.Calendar
+import java.util.Date
 
 /*
 hilt변경
@@ -32,16 +37,15 @@ navigation
 ui design
 그냥 알림 권한
 */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),DialogListener {
 
     private val binding : ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private val calendarFragment = CalendarFragment()
-    private val statsFragment = StatsFragment()
     private val viewModel: ViewModel by inject()
     private val navController: NavController by lazy {
-        (supportFragmentManager.findFragmentById(R.id.navhost) as NavHostFragment).navController
+        findNavController(R.id.fragment)
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         if(flag){
             Timber.e("flag == true")
             Timber.e("value = ${intent.getStringExtra("money")}")
-            calendarFragment.showDialog(money = intent.getStringExtra("money")?:"")
+            showDialog(money = intent.getStringExtra("money")?:"")
         }
 
     }
@@ -84,6 +88,11 @@ class MainActivity : AppCompatActivity() {
         //startForegroundService(Intent(this,MyNotificationListenerService::class.java))
 
     }
+    fun showDialog(date: Date = Date(), money: String = ""){
+        AddSpendingDataDialog(this,date,money).apply {
+            show(supportFragmentManager,"spending")
+        }
+    }
 
     private fun isNotificationPermissionGranted(): Boolean {
         return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
@@ -95,5 +104,13 @@ class MainActivity : AppCompatActivity() {
         } else {
             NotificationManagerCompat.getEnabledListenerPackages(applicationContext).contains(applicationContext.packageName)
         }
+    }
+    override fun submitData(money: Int, type: String, date: Date) {
+        //db insert
+        val cal = Calendar.getInstance().apply { time = date }
+        viewModel.insertData(
+            SpendingData(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH)+1,cal.get(
+                Calendar.DAY_OF_MONTH),type,money)
+        )
     }
 }

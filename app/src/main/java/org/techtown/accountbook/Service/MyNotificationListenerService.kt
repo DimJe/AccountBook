@@ -24,8 +24,8 @@ class MyNotificationListenerService : NotificationListenerService() {
     val channelId = "channelId"
     val channelName = "Foreground Service Channel"
     var notificationId = 1
-    val DEBOUNCE_TIME_MS = 2000
-    var lastNotificationTime = 0
+    val DEBOUNCE_TIME_MS = 1000
+    var lastNotificationTime = 0L
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
@@ -33,6 +33,7 @@ class MyNotificationListenerService : NotificationListenerService() {
         val currentTime = System.currentTimeMillis()
 
         if(currentTime - lastNotificationTime < DEBOUNCE_TIME_MS ) return
+        lastNotificationTime = currentTime
 
         val packageName: String = sbn?.packageName ?: "Null"
         val extras = sbn?.notification?.extras

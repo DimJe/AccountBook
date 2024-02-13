@@ -26,7 +26,7 @@ import timber.log.Timber
 import java.util.*
 
 
-class CalendarFragment : Fragment(),DialogListener {
+class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
     private val calender = Calendar.getInstance()
@@ -50,11 +50,6 @@ class CalendarFragment : Fragment(),DialogListener {
         initView()
 
         return binding.root
-    }
-    fun showDialog(date: Date = Date(),money: String = ""){
-        AddSpendingDataDialog(this@CalendarFragment,date,money).apply {
-            show(this@CalendarFragment.requireActivity().supportFragmentManager,"spending")
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -96,7 +91,7 @@ class CalendarFragment : Fragment(),DialogListener {
             adapter = calAdapter.apply {
                 setOnItemClickListener(object : MonthAdapter.OnItemClickListener{
                     override fun onItemClick(date: Date, position: Int) {
-                        showDialog(date = date)
+                        (requireActivity() as MainActivity).showDialog(date = date)
                     }
                 })
             }
@@ -132,10 +127,5 @@ class CalendarFragment : Fragment(),DialogListener {
                 }
             })
         }
-    }
-    override fun submitData(money: Int, type: String, date: Date) {
-        //db insert
-        val cal = Calendar.getInstance().apply { time = date }
-        viewModel.insertData(SpendingData(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH)+1,cal.get(Calendar.DAY_OF_MONTH),type,money))
     }
 }

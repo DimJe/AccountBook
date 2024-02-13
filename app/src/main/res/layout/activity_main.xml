@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/bottom_bar_round"
-        android:layout_weight="1.1">
+        android:layout_weight="1">
 
         <org.techtown.accountbook.UI.custom.CustomBtn
             android:id="@+id/calendar"
