@@ -6,19 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
-import org.techtown.accountbook.Model.SpendingData
 import org.techtown.accountbook.Repository.ResultState
 import org.techtown.accountbook.UI.activity.MainActivity
-import org.techtown.accountbook.UI.dialog.AddSpendingDataDialog
-import org.techtown.accountbook.UI.dialog.DialogListener
 import org.techtown.accountbook.ViewModel.ViewModel
 import org.techtown.accountbook.adapter.MonthAdapter
 import org.techtown.accountbook.databinding.FragmentCalendarBinding
@@ -26,11 +24,12 @@ import timber.log.Timber
 import java.util.*
 
 
+@AndroidEntryPoint
 class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
     private val calender = Calendar.getInstance()
-    private val viewModel: ViewModel by activityViewModel()
+    private val viewModel: ViewModel by activityViewModels()
     lateinit var calAdapter: MonthAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

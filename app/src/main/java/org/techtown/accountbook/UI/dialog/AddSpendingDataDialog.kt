@@ -10,11 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
-import org.techtown.accountbook.Model.SpendingDataDao
 import org.techtown.accountbook.UI.custom.CustomRadioBtn
 import org.techtown.accountbook.databinding.DialogAddSpendingBinding
 import timber.log.Timber
@@ -29,7 +24,6 @@ class AddSpendingDataDialog(dialogListener: DialogListener,date: Date,money: Str
     private var dialogListener: DialogListener? = null
     private var date: Date? = null
     private var moneyText = ""
-    val dao: SpendingDataDao by inject()
 
     init {
         this.dialogListener = dialogListener

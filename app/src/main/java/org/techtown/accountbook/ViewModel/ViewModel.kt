@@ -1,11 +1,11 @@
 package org.techtown.accountbook.ViewModel
 
-import android.util.Log
 import org.techtown.accountbook.Repository.DBRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +18,10 @@ import org.techtown.accountbook.Model.SpendingChartingData
 import org.techtown.accountbook.Model.SpendingData
 import org.techtown.accountbook.Model.SpendingUiData
 import org.techtown.accountbook.Repository.ResultState
+import javax.inject.Inject
 
-class ViewModel(private val dbRepository: DBRepository) : ViewModel() {
+@HiltViewModel
+class ViewModel @Inject constructor(private val dbRepository: DBRepository) : ViewModel() {
 
     private var mSpendingUiData: MutableStateFlow<ResultState<List<SpendingUiData>>> = MutableStateFlow(ResultState.Loading())
     var spendingUiData: StateFlow<ResultState<List<SpendingUiData>>> = mSpendingUiData

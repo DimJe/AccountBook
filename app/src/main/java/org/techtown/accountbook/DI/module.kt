@@ -1,33 +1,36 @@
 package org.techtown.accountbook.DI
 
-import android.app.Application
+import android.content.Context
 import androidx.room.Room
-import org.koin.android.ext.koin.androidApplication
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import org.techtown.accountbook.Model.AppDatabase
 import org.techtown.accountbook.Model.SpendingDataDao
 import org.techtown.accountbook.Repository.DBRepository
 import org.techtown.accountbook.ViewModel.ViewModel
+import javax.inject.Singleton
 
-val module  = module{
+@Module
+@InstallIn(SingletonComponent::class)
+object modules{
 
-    fun provideDatabase(application: Application): AppDatabase{
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
-            application,AppDatabase::class.java,"spending")
+            context,AppDatabase::class.java,"spending")
             .fallbackToDestructiveMigration()
             .build()
     }
+    @Provides
     fun provideDao(database: AppDatabase): SpendingDataDao = database.dao
 
-    single {
-        provideDatabase(androidApplication())
-    }
-    single {
-        provideDao(get())
-    }
-    single {
-        DBRepository(get())
-    }
-    viewModel { ViewModel(get()) }
+    @Provides
+    @Singleton
+    fun provideRepo(dao: SpendingDataDao) : DBRepository = DBRepository(dao)
+    @Provides
+    fun provideVM(repo: DBRepository) = ViewModel(repo)
 }

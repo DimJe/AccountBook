@@ -1,19 +1,18 @@
 package org.techtown.accountbook.Repository
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.techtown.accountbook.Model.SpendingData
 import org.techtown.accountbook.Model.SpendingDataDao
+import javax.inject.Inject
 
-class DBRepository(private val dao: SpendingDataDao) {
+class DBRepository @Inject constructor(private val dao: SpendingDataDao) {
 
     suspend fun insertSpendingData(data: SpendingData){
         dao.insertData(data)

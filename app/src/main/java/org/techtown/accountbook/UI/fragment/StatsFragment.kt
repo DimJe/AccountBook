@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -21,8 +22,8 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.techtown.accountbook.Model.SpendingChartingData
 import org.techtown.accountbook.Repository.ResultState
 import org.techtown.accountbook.UI.custom.OnSwipeTouchListener
@@ -32,11 +33,12 @@ import org.techtown.accountbook.databinding.FragmentStatsBinding
 import java.util.Calendar
 import java.util.Date
 
+@AndroidEntryPoint
 class StatsFragment : Fragment() {
 
     private var _binding : FragmentStatsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ViewModel by activityViewModel()
+    private val viewModel: ViewModel by activityViewModels()
     private val calender = Calendar.getInstance()
     lateinit var adapter: SpendingAdapter
 

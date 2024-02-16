@@ -9,13 +9,15 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import androidx.activity.viewModels
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import org.koin.android.ext.android.inject
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.migration.CustomInjection.inject
 import org.techtown.accountbook.Model.SpendingData
 import org.techtown.accountbook.R
 import org.techtown.accountbook.Service.MyNotificationListenerService
@@ -37,12 +39,13 @@ navigation
 ui design
 그냥 알림 권한
 */
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(),DialogListener {
 
     private val binding : ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private val viewModel: ViewModel by inject()
+    private val viewModel: ViewModel by viewModels()
     private val navController: NavController by lazy {
         findNavController(R.id.fragment)
 
